@@ -5,6 +5,7 @@
   --ink: #dfe9ff;
   --steel: #7e9cc9;
   --hairline: #2a4a7f;
+  --hairline-soft: rgba(42, 74, 127, 0.5);
   --accent: #ff7a3d;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
   --sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -40,6 +41,16 @@ a { color: inherit; }
   display: block;
 }
 
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(115% 85% at 50% 42%, transparent 45%, rgba(10, 28, 60, 0.5) 100%),
+    linear-gradient(180deg, rgba(10, 28, 60, 0.22), transparent 28%, transparent 72%, rgba(10, 28, 60, 0.4));
+}
+
 /* ===== LAYOUT ===== */
 .container {
   position: relative;
@@ -51,22 +62,22 @@ a { color: inherit; }
 
 main { position: relative; z-index: 1; }
 
-section { padding: 96px 0; }
+section { padding: 112px 0; }
 
 .sheet {
-  border-top: 1px solid var(--hairline);
-  background: rgba(10, 28, 60, 0.55);
+  border-top: 1px solid var(--hairline-soft);
+  background: rgba(10, 28, 60, 0.5);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
 
 .fig-label {
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--steel);
+  color: rgba(126, 156, 201, 0.78);
   margin-bottom: 14px;
 }
 
@@ -91,14 +102,14 @@ section { padding: 96px 0; }
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--hairline);
+  background: var(--hairline-soft);
 }
 
 .sheet-rule::after {
   content: '';
   width: 9px;
   height: 9px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   transform: rotate(45deg);
 }
 
@@ -115,7 +126,7 @@ nav.scrolled {
   background: rgba(10, 28, 60, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom-color: var(--hairline);
+  border-bottom-color: var(--hairline-soft);
 }
 
 .nav-inner {
@@ -206,7 +217,7 @@ nav.scrolled {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   padding: 4px 10px;
   margin-bottom: 26px;
 }
@@ -216,7 +227,7 @@ nav.scrolled {
   font-size: 0.7rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--steel);
+  color: rgba(126, 156, 201, 0.78);
   display: block;
   margin-bottom: 14px;
 }
@@ -280,7 +291,7 @@ nav.scrolled {
 .about-text p { margin-bottom: 16px; color: var(--ink); }
 .about-text strong { color: var(--accent); }
 
-.spec-stats { border: 1px solid var(--hairline); }
+.spec-stats { border: 1px solid var(--hairline-soft); }
 
 .spec-row {
   display: grid;
@@ -289,7 +300,7 @@ nav.scrolled {
     'value label'
     'value note';
   padding: 18px 20px;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline-soft);
 }
 
 .spec-row:last-child { border-bottom: 0; }
@@ -312,7 +323,7 @@ nav.scrolled {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 2px;
-  background: var(--hairline);
+  background: var(--hairline-soft);
 }
 
 .exp-date {
@@ -340,7 +351,7 @@ nav.scrolled {
 
 .project-card {
   display: block;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   padding: 26px 26px 22px;
   text-decoration: none;
   position: relative;
@@ -392,7 +403,7 @@ nav.scrolled {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--steel);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   padding: 2px 8px;
 }
 
@@ -428,7 +439,7 @@ nav.scrolled {
 .check { color: var(--accent); font-size: 0.8rem; }
 
 .edu-block {
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   padding: 20px;
 }
 
@@ -443,7 +454,7 @@ nav.scrolled {
   display: flex;
   gap: 14px;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(42, 74, 127, 0.5);
+  border-bottom: 1px solid rgba(42, 74, 127, 0.3);
 }
 
 .cert-item:last-child { border-bottom: 0; }
@@ -462,7 +473,7 @@ nav.scrolled {
 footer {
   position: relative;
   z-index: 1;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--hairline-soft);
   background: rgba(10, 28, 60, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -494,8 +505,8 @@ footer {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 22px;
-  border-top: 1px solid var(--hairline);
-  border-bottom: 1px solid var(--hairline);
+  border-top: 1px solid var(--hairline-soft);
+  border-bottom: 1px solid var(--hairline-soft);
   padding: 26px 0;
 }
 
