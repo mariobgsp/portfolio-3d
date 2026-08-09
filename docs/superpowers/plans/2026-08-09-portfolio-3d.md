@@ -295,7 +295,7 @@ coreOpacity = max(0.1, dim)
 coreScale = 1 - beyond * 0.45
 coreOffsetX = beyond * 2.2
 cameraZ = 5 + beyond * 0.8
-cameraY = -beyond * 0.6
+cameraY = beyond > 0 ? -beyond * 0.6 : 0   (plain `-beyond * 0.6` yields -0 at beyond=0, failing `toBe(0)`; the guard is required)
 ```
 
 - [ ] **Step 1: Write the failing test** — `tests/scroll.test.js`
@@ -369,7 +369,7 @@ export function getSceneState(progress) {
     coreScale: 1 - beyond * 0.45,
     coreOffsetX: beyond * 2.2,
     cameraZ: 5 + beyond * 0.8,
-    cameraY: -beyond * 0.6,
+    cameraY: beyond > 0 ? -beyond * 0.6 : 0,
   };
 }
 
