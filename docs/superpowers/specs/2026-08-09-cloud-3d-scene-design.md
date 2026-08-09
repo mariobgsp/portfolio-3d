@@ -24,7 +24,7 @@ Branch: `feature/cloud-3d-scene`.
 - New module `src/cloud.js` replacing `src/core.js`:
   - `createCloud()` returns a `THREE.Group` named `cloud`.
   - `updateCloud(group, delta)` drives breathing + drift.
-- `src/scene.js`: import `updateCloud` from `cloud.js`; add `THREE.Fog(0x0a1c3c, 6, 14)`; lower grid opacity 0.35 → 0.18.
+- `src/scene.js`: import `updateCloud` from `cloud.js`; add `THREE.Fog(0x0a1c3c, 4.8, 7.5)`; lower grid opacity 0.35 → 0.18.
 - `src/scroll.js`: rename state keys `coreOpacity` → `cloudOpacity`, `coreScale` → `cloudScale`, `coreOffsetX` → `cloudOffsetX` for clarity. Values unchanged.
 - `src/scene.js`: rename `core` local/state references to `cloud`; behavior (dim/scale/shift on scroll, mouse parallax, camera drift, reduced-motion static frame) unchanged.
 - `src/main.js`: call `createCloud` instead of `createCore`.
@@ -32,15 +32,15 @@ Branch: `feature/cloud-3d-scene`.
 ## 3D scene design
 
 - **Cloud construction:**
-  - ~45 puff spheres (`SphereGeometry(1, 24, 16)` scaled per puff), radii 0.25–0.9.
+  - ~45 puff spheres (`SphereGeometry(1, 24, 16)` scaled per puff), radii 0.18–0.62.
   - Arranged in a billowing silhouette: flat-ish bottom, 3–4 upper lobes, group flattened in Y (wide, not tall).
-  - Materials: `MeshBasicMaterial` (fog-affected, cheap), transparent, `depthWrite: false`, opacity 0.25–0.45.
+  - Materials: `MeshBasicMaterial` (fog-affected, cheap), transparent, `depthWrite: false`, opacity 0.24–0.42.
   - Two tones: ink-white `0xdfe9ff` and steel `0x7e9cc9`, distributed among puffs.
 - **Motion (`updateCloud`):**
-  - Breathing: each puff stores its own phase, speed, and amplitude; scale oscillates ±2–4%.
+  - Breathing: each puff stores its own phase, speed, and amplitude; scale oscillates ±2–3.5%.
   - Drift: group `position.x = sin(time * 0.08) * 0.35`.
 - **Environment:**
-  - `THREE.Fog(0x0a1c3c, 6, 14)` softens distant puffs into the background.
+  - `THREE.Fog(0x0a1c3c, 4.8, 7.5)` softens distant puffs into the background.
   - Blueprint grid retained but fainter (opacity 0.18).
 - **Interaction (unchanged semantics):** mouse parallax tilt/offset; scroll dims (`cloudOpacity` floor 0.1), shrinks, and shifts the cloud aside (`cloudOffsetX`); reduced-motion renders one static frame.
 

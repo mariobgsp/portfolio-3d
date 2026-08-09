@@ -8,7 +8,7 @@ export function createScene({ canvas }) {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a1c3c);
-  scene.fog = new THREE.Fog(0x0a1c3c, 6, 14);
+  scene.fog = new THREE.Fog(0x0a1c3c, 4.8, 7.5);
 
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 0, 5);
@@ -45,7 +45,7 @@ export function createScene({ canvas }) {
       cloud.position.y += (targetY - cloud.position.y) * 0.06;
       cloud.scale.setScalar(state.cloudScale);
       cloud.traverse((child) => {
-        if (child.material) child.material.opacity = state.cloudOpacity * child.userData.baseOpacity;
+        if (child.material) child.material.opacity = state.cloudOpacity * (child.userData.baseOpacity ?? 1);
       });
     }
 

@@ -98,6 +98,7 @@ export function updateCloud(group, delta) {
   group.userData.time = time;
 
   const drift = group.getObjectByName('drift');
+  if (!drift) return;
   drift.position.x = Math.sin(time * 0.08) * 0.35;
 
   drift.children.forEach((puff) => {
