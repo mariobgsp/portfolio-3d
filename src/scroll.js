@@ -10,9 +10,9 @@ export function getSceneState(progress) {
   const beyond = Math.min(1, Math.max(0, (progress - heroEnd) / (1 - heroEnd)));
   const dim = 1 - beyond * 0.85;
   return {
-    coreOpacity: Math.max(0.1, dim),
-    coreScale: 1 - beyond * 0.45,
-    coreOffsetX: beyond * 2.2,
+    cloudOpacity: Math.max(0.1, dim),
+    cloudScale: 1 - beyond * 0.45,
+    cloudOffsetX: beyond * 2.2,
     cameraZ: 5 + beyond * 0.8,
     cameraY: beyond > 0 ? -beyond * 0.6 : 0,
   };

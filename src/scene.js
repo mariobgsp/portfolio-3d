@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { updateCore } from './core.js';
+import { updateCloud } from './cloud.js';
 
 export function createScene({ canvas }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
@@ -8,6 +8,7 @@ export function createScene({ canvas }) {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x0a1c3c);
+  scene.fog = new THREE.Fog(0x0a1c3c, 6, 14);
 
   const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.set(0, 0, 5);
@@ -15,18 +16,18 @@ export function createScene({ canvas }) {
   const grid = new THREE.GridHelper(22, 22, 0x2a4a7f, 0x1b3a66);
   grid.position.y = -2.4;
   grid.material.transparent = true;
-  grid.material.opacity = 0.35;
+  grid.material.opacity = 0.18;
   scene.add(grid);
 
-  let core = null;
+  let cloud = null;
   const clock = new THREE.Clock();
   let rafId = null;
 
   const state = {
-    coreOpacity: 1,
-    coreScale: 1,
-    coreOffsetX: 0,
-    coreBaseX: 0,
+    cloudOpacity: 1,
+    cloudScale: 1,
+    cloudOffsetX: 0,
+    cloudBaseX: 0,
     cameraZ: 5,
     cameraY: 0,
     mouseX: 0,
@@ -35,16 +36,16 @@ export function createScene({ canvas }) {
 
   function render() {
     const delta = Math.min(clock.getDelta(), 0.05);
-    if (core) updateCore(core, delta);
+    if (cloud) updateCloud(cloud, delta);
 
-    if (core) {
-      const targetX = state.coreBaseX + state.coreOffsetX + state.mouseX * 0.25;
+    if (cloud) {
+      const targetX = state.cloudBaseX + state.cloudOffsetX + state.mouseX * 0.25;
       const targetY = -state.mouseY * 0.2;
-      core.position.x += (targetX - core.position.x) * 0.06;
-      core.position.y += (targetY - core.position.y) * 0.06;
-      core.scale.setScalar(state.coreScale);
-      core.children.forEach((child) => {
-        if (child.material) child.material.opacity = state.coreOpacity;
+      cloud.position.x += (targetX - cloud.position.x) * 0.06;
+      cloud.position.y += (targetY - cloud.position.y) * 0.06;
+      cloud.scale.setScalar(state.cloudScale);
+      cloud.traverse((child) => {
+        if (child.material) child.material.opacity = state.cloudOpacity * child.userData.baseOpacity;
       });
     }
 
@@ -62,9 +63,9 @@ export function createScene({ canvas }) {
   }
 
   return {
-    start(coreGroup, animate = true) {
-      core = coreGroup;
-      if (core && !core.parent) scene.add(core);
+    start(cloudGroup, animate = true) {
+      cloud = cloudGroup;
+      if (cloud && !cloud.parent) scene.add(cloud);
       clock.start();
       render();
       if (animate) frame();

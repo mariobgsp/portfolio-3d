@@ -1,5 +1,5 @@
 import { createScene } from './scene.js';
-import { createCore } from './core.js';
+import { createCloud } from './cloud.js';
 import { getScrollProgress, getSceneState, getMouseState } from './scroll.js';
 import { initNav, initReveals } from './ui.js';
 
@@ -19,7 +19,7 @@ function applyScrollState() {
 function applyLayoutState() {
   if (!scene) return;
   const aspect = window.innerWidth / window.innerHeight;
-  scene.updateState({ coreBaseX: aspect >= 1 ? 2.0 : 0 });
+  scene.updateState({ cloudBaseX: aspect >= 1 ? 2.0 : 0 });
   applyScrollState();
 }
 
@@ -53,9 +53,9 @@ window.addEventListener('resize', () => {
 
 try {
   scene = createScene({ canvas });
-  const core = createCore();
+  const cloud = createCloud();
   applyLayoutState();
-  scene.start(core, !reduceMotion);
+  scene.start(cloud, !reduceMotion);
 } catch (err) {
   console.warn('3D scene unavailable, continuing without it:', err);
   canvas.remove();
