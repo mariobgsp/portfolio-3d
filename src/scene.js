@@ -77,6 +77,7 @@ export function createScene({ canvas }) {
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
     },
+    render,
     dispose() {
       cancelAnimationFrame(rafId);
       renderer.dispose();

@@ -43,6 +43,7 @@ window.addEventListener('mousemove', (e) => {
 window.addEventListener('resize', () => {
   scene.resize(window.innerWidth, window.innerHeight);
   applyLayoutState();
+  if (reduceMotion) scene.render();
 });
 
 applyLayoutState();
