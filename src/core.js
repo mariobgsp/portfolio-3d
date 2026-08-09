@@ -9,7 +9,7 @@ export function createCore() {
 
   const icosahedron = new THREE.Mesh(
     new THREE.IcosahedronGeometry(1, 2),
-    new THREE.MeshBasicMaterial({ color: ACCENT, wireframe: true })
+    new THREE.MeshBasicMaterial({ color: ACCENT, wireframe: true, transparent: true })
   );
   icosahedron.name = 'icosahedron';
   group.add(icosahedron);
@@ -24,7 +24,7 @@ export function createCore() {
 
   const particles = new THREE.Points(
     createParticleGeometry(900),
-    new THREE.PointsMaterial({ color: STEEL, size: 0.03, sizeAttenuation: true })
+    new THREE.PointsMaterial({ color: STEEL, size: 0.03, sizeAttenuation: true, transparent: true })
   );
   particles.name = 'particles';
   group.add(particles);
@@ -35,7 +35,7 @@ export function createCore() {
 function createRing(radius, rx, ry) {
   const ring = new THREE.Mesh(
     new THREE.TorusGeometry(radius, 0.008, 8, 120),
-    new THREE.MeshBasicMaterial({ color: STEEL })
+    new THREE.MeshBasicMaterial({ color: STEEL, transparent: true })
   );
   ring.rotation.set(rx, ry, 0);
   return ring;
