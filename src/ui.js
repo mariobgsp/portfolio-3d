@@ -1,8 +1,9 @@
+const SECTION_IDS = ['about', 'experience', 'projects', 'skills', 'contact'];
+
 export function initNav() {
   const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
-  const sections = ['about', 'experience', 'projects', 'skills', 'contact'];
   const linkEls = {};
   document.querySelectorAll('.nav-links a').forEach((a) => {
     linkEls[a.getAttribute('href').slice(1)] = a;
@@ -13,10 +14,10 @@ export function initNav() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-      const y = window.scrollY + 120;
+      navbar.classList.toggle('scrolled', window.scrollY > 24);
+      const y = window.scrollY + 130;
       let current = 'about';
-      for (const id of sections) {
+      for (const id of SECTION_IDS) {
         const el = document.getElementById(id);
         if (el && el.offsetTop <= y) current = id;
       }
@@ -28,30 +29,47 @@ export function initNav() {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navLinks.classList.remove('open');
+    document.body.classList.remove('lock');
+  }
+
   navToggle.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
+    navToggle.classList.toggle('open', open);
     navToggle.setAttribute('aria-expanded', String(open));
+    document.body.classList.toggle('lock', open);
   });
-  navLinks.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      navLinks.classList.remove('open');
-      navToggle.setAttribute('aria-expanded', 'false');
-    });
+
+  navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 860) closeMenu();
   });
 }
 
 export function initReveals() {
+  const targets = document.querySelectorAll('.reveal, .stagger');
   if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('visible'));
+    targets.forEach((el) => el.classList.add('visible'));
     return;
   }
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+  );
+  targets.forEach((el) => observer.observe(el));
 }
